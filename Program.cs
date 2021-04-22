@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace LoggingSample
 {
@@ -24,14 +25,14 @@ namespace LoggingSample
                     webBuilder.ConfigureLogging((webHostBuilderContext, logging) =>
                     {
                         logging.ClearProviders();
-                        var config = new ColoredConsoleLoggerConfiguration
-                        {
-                            LogLevel = LogLevel.Information,
-                            ConsoleColor = ConsoleColor.Green
-                        };
-                        logging.AddProvider(new
-                        ColoredConsoleLoggerProvider(config));
-                    });
+                        //var config = new ColoredConsoleLoggerConfiguration
+                        //{
+                        //    LogLevel = LogLevel.Information,
+                        //    ConsoleColor = ConsoleColor.Green
+                        //};
+                        //logging.AddProvider(new ColoredConsoleLoggerProvider(config));
+                        logging.SetMinimumLevel(LogLevel.Trace);
+                    }).UseNLog();
 
                     webBuilder.UseStartup<Startup>();
                 });
