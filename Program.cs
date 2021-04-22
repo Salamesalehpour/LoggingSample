@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoggingSample.CustomLogger;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +21,18 @@ namespace LoggingSample
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureLogging((webHostBuilderContext, logging) =>
+                    {
+                        logging.ClearProviders();
+                        var config = new ColoredConsoleLoggerConfiguration
+                        {
+                            LogLevel = LogLevel.Information,
+                            ConsoleColor = ConsoleColor.Green
+                        };
+                        logging.AddProvider(new
+                        ColoredConsoleLoggerProvider(config));
+                    });
+
                     webBuilder.UseStartup<Startup>();
                 });
     }
